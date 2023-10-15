@@ -3,6 +3,7 @@ from tkinter import *
 import json
 from donnees import read_data
 from tkinter import simpledialog
+from tkinter import filedialog
 
 
 class Tableau:
@@ -27,12 +28,14 @@ class Tableau:
             self.entrees.append((entree_cle, entree_valeur))
 
         root.bind("<Control-f>", self.search)
+        root.bind("<Control-c>", lambda: self.copier(root.focus_get()))
+        root.bind("<Control-s>", self.save_as_file)
 
     def search(self, event):
         "Rechercher un élément du fichier JSON"
 
         recherche = simpledialog.askstring(
-            "Element à rechercher", "Entrez l'élément à rechecher dans le tableau :")
+            "Element à rechercher", "Entrez l'élément à rechecher dans le tableau (tout élément correspondant verra sa colonne mise en jaune) :")
 
         # Rechercher le texte dans les entrées
         for entree_cle, entree_valeur in self.entrees:
@@ -48,3 +51,14 @@ class Tableau:
     def destroy(self):
         for bouton in self.boutons_entrees:
             bouton.destroy()
+
+    def save_as_file(self, event):
+        "Sauvegarder sous un fichier JSON"
+        save_path = filedialog.asksaveasfilename(
+            defaultextension=".json", title="Enregistrer sous un fichier JSON", filetypes=[("JSON", "*.json")])
+        for bouton_entree in self.boutons_entrees:
+            print(bouton_entree)
+            str_entree = bouton_entree.get()
+            with open(save_path, "w") as wf:
+                wf.write(str_entree)
+                wf.close()

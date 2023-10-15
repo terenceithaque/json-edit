@@ -3,12 +3,12 @@ from tkinter import filedialog
 import json
 import os
 from donnees import read_data
-from tableau import *
-
-liste_tableaux = []
 
 
-def open_json(root):
+save_path = ""
+
+
+def open_json(root, onopenfunc):
     "Ouvrir un fichier JSON"
     global file_path
     file_path = filedialog.askopenfilename(
@@ -19,11 +19,27 @@ def open_json(root):
 
     read_data(file_path)
 
-    tableau = Tableau(file_path, root)
-    liste_tableaux.append(tableau)
-    print("Premier tableau", liste_tableaux[0])
+    onopenfunc()
 
-    if len(liste_tableaux) > 1:
-        liste_tableaux[0].destroy()
-        del liste_tableaux[0]
-        print("Premier tableau suprimmé !")
+
+def update_save_path(new_save_path):
+    save_path = new_save_path
+    return save_path
+
+
+def get_file_path():
+    return file_path
+
+
+def save_as_file(tableau):
+    "Sauvegarder sous un fichier JSON"
+    save_path = filedialog.asksaveasfilename(
+        title="Enregistrer dans un fichier JSON", defaultextension=".json", filetypes=["Fichier JSON", "*.json"])
+
+    for entree in tableau:
+        str_entree = entree.get()
+        with open(save_as_file, "w") as wf:
+            wf.write(str_entree)
+            wf.close()
+
+    return update_save_path(save_path)
