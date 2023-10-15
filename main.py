@@ -22,8 +22,17 @@ class Application(Tk):
         self.menu_edition = Menu(self.barre_menu, tearoff=0)
         self.menu_edition.add_command(
             label="Afficher les commandes & raccourcis claviers", command=self.afficher_raccourcis)
+        self.menu_edition.add_command(
+            label="Remplacer dans les entrées", command=self.replace)
 
         self.barre_menu.add_cascade(label="Edition", menu=self.menu_edition)
+
+        # Créer un menu "Insertion"
+        self.menu_insertion = Menu(self.barre_menu, tearoff=0)
+        self.menu_insertion.add_command(
+            label="Insérer une nouvelle entrée Ctrl + E", command=self.add_entry)
+        self.barre_menu.add_cascade(
+            label="Insertion", menu=self.menu_insertion)
         self.config(menu=self.barre_menu)
 
         self.liste_tableaux = []
@@ -52,6 +61,15 @@ class Application(Tk):
         label_rechercher = Label(
             fen_raccourcis, text="Rechercher dans le tableau : Ctrl + F")
         label_rechercher.pack()
+
+    def add_entry(self):
+        "Ajouter une entrée à un tableau existant"
+        for tableau in self.liste_tableaux:
+            tableau.ajouter_entree(self)
+
+    def replace(self):
+        for tableau in self.liste_tableaux:
+            tableau.remplacer()
 
 
 app = Application()  # Créer une instance de l'application

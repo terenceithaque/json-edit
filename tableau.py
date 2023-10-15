@@ -30,6 +30,7 @@ class Tableau:
         root.bind("<Control-f>", self.search)
         root.bind("<Control-c>", lambda: self.copier(root.focus_get()))
         root.bind("<Control-s>", self.save_as_file)
+        root.bind("<Control-e>", lambda event: self.ajouter_entree(root, event))
 
     def search(self, event):
         "Rechercher un élément du fichier JSON"
@@ -38,15 +39,14 @@ class Tableau:
             "Element à rechercher", "Entrez l'élément à rechecher dans le tableau (tout élément correspondant verra sa colonne mise en jaune) :")
 
         # Rechercher le texte dans les entrées
-        for entree_cle, entree_valeur in self.entrees:
-            if recherche in entree_cle.get() or recherche in entree_valeur.get():
+        for entree in self.boutons_entrees:
+            if recherche in entree.get():
                 # Si le texte est trouvé, mettre en évidence l'entrée
-                entree_cle.config(bg="yellow")
-                entree_valeur.config(bg="yellow")
+                entree.config(bg="yellow")
+                entree.config(bg="yellow")
 
             else:
-                entree_cle.config(bg="white")
-                entree_valeur.config(bg="white")
+                entree.config(bg="white")
 
     def destroy(self):
         for bouton in self.boutons_entrees:
@@ -60,5 +60,22 @@ class Tableau:
             print(bouton_entree)
             str_entree = bouton_entree.get()
             with open(save_path, "w") as wf:
-                wf.write(str_entree)
-                wf.close()
+                json.dump(str_entree, wf)
+
+    def ajouter_entree(self, root, event):
+        "Ajouter un widget Entrée au tableau"
+        nouvelle_entree = Entry(root)
+        nouvelle_entree.pack(fill="x")
+        self.boutons_entrees.append(nouvelle_entree)
+
+    def remplacer(self):
+        "Remplacer élément du tableau par un autre"
+        original_str = simpledialog.askstring(
+            "Entrez l'élément à remplacer", "Saisissez l'élément à remplacer dans toutes les entrées :")
+        new_str = simpledialog.askstring(
+            "Entrez le nouvel élément", "Saisissez le nouvel élément :")
+        for entree in self.boutons_entrees:  # Pour chaque entrée du tableau
+            if original_str in entree.get():
+                entree.delete(
+                    len(entree.get()) - len(original_str), len(original_str))
+                entree.insert(len(original_str), new_str)
