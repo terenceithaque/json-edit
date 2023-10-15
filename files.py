@@ -23,5 +23,7 @@ def open_json(root):
     liste_tableaux.append(tableau)
     print("Premier tableau", liste_tableaux[0])
 
-    if len(liste_tableaux) > 0:
+    if len(liste_tableaux) > 1:
         liste_tableaux[0].destroy()
+        del liste_tableaux[0]
+        print("Premier tableau suprimmé !")
