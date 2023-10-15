@@ -17,6 +17,10 @@ class Application(Tk):
         self.menu_fichier.add_command(
             label="Ouvrir un fichier JSON", command=lambda: open_json(self))
         self.barre_menu.add_cascade(label="Fichier", menu=self.menu_fichier)
+        # Créer un menu "Edition"
+        self.menu_edition = Menu(self.barre_menu, tearoff=0)
+
+        self.barre_menu.add_cascade(label="Edition", menu=self.menu_edition)
         self.config(menu=self.barre_menu)
 
 

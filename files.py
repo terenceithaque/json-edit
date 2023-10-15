@@ -5,6 +5,8 @@ import os
 from donnees import read_data
 from tableau import *
 
+liste_tableaux = []
+
 
 def open_json(root):
     "Ouvrir un fichier JSON"
@@ -15,6 +17,11 @@ def open_json(root):
     filename = os.path.basename(file_path)
     root.title("{} - JSON-Edit".format(filename))
 
-    tableau = Tableau(file_path, root)
-
     read_data(file_path)
+
+    tableau = Tableau(file_path, root)
+    liste_tableaux.append(tableau)
+    print("Premier tableau", liste_tableaux[0])
+
+    if len(liste_tableaux) > 0:
+        liste_tableaux[0].destroy()
