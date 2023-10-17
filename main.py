@@ -16,7 +16,9 @@ class Application(Tk):
         # Créer un menu "Fichier"
         self.menu_fichier = Menu(self.barre_menu, tearoff=0)
         self.menu_fichier.add_command(
-            label="Ouvrir un fichier JSON", command=lambda: open_json(self, self.creer_tableau))
+            label="Nouveau fichier JSON", command=lambda: self.creer_tableau(set_path=None))
+        self.menu_fichier.add_command(
+            label="Ouvrir un fichier JSON", command=lambda: open_json(self, self.creer_tableau(True)))
         self.barre_menu.add_cascade(label="Fichier", menu=self.menu_fichier)
         # Créer un menu "Edition"
         self.menu_edition = Menu(self.barre_menu, tearoff=0)
@@ -30,16 +32,20 @@ class Application(Tk):
         # Créer un menu "Insertion"
         self.menu_insertion = Menu(self.barre_menu, tearoff=0)
         self.menu_insertion.add_command(
-            label="Insérer une nouvelle entrée Ctrl + E", command=self.add_entry)
+            label="Insérer une nouvelle entrée Ctrl + E", command=lambda: self.add_entry(None))
         self.barre_menu.add_cascade(
             label="Insertion", menu=self.menu_insertion)
         self.config(menu=self.barre_menu)
 
         self.liste_tableaux = []
 
-    def creer_tableau(self):
+    def creer_tableau(self, set_path):
         "Créer un tableau"
-        tableau = Tableau(get_file_path(), self)
+        if set_path is not None:
+            tableau = Tableau(get_file_path(), self)
+
+        else:
+            tableau = Tableau(None, self)
 
         self.liste_tableaux.append(tableau)
         print("Longueur de la liste :", len(self.liste_tableaux))
@@ -62,10 +68,10 @@ class Application(Tk):
             fen_raccourcis, text="Rechercher dans le tableau : Ctrl + F")
         label_rechercher.pack()
 
-    def add_entry(self):
+    def add_entry(self, event):
         "Ajouter une entrée à un tableau existant"
         for tableau in self.liste_tableaux:
-            tableau.ajouter_entree(self)
+            tableau.ajouter_entree(self, event)
 
     def replace(self):
         for tableau in self.liste_tableaux:
