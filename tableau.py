@@ -86,8 +86,12 @@ class Tableau:
             "Entrez l'élément à remplacer", "Saisissez l'élément à remplacer dans toutes les entrées :")
         new_str = simpledialog.askstring(
             "Entrez le nouvel élément", "Saisissez le nouvel élément :")
+
         for entree in self.boutons_entrees:  # Pour chaque entrée du tableau
-            if original_str in entree.get():
-                entree.delete(
-                    len(entree.get()) - len(original_str), len(original_str))
-                entree.insert(len(original_str), new_str)
+            string = entree.get()
+            original_str_index = string.find(original_str, 0, len(string))
+            original_str_lenght = len(original_str)
+            if original_str in string:
+                entree.delete(original_str_index,
+                              original_str_index + original_str_lenght)
+                entree.insert(original_str_index, new_str)
