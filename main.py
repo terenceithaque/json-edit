@@ -1,9 +1,9 @@
 # Programme pour visualiser et éditer graphqiuement des fichiers JSON
+from tableau import *
+from donnees import read_data
 from tkinter import *  # Importer tkinter pour l'interface graphique
 import json  # Importer le module JSON
 from files import *
-from donnees import read_data
-from tableau import *
 
 
 class Application(Tk):
@@ -18,7 +18,7 @@ class Application(Tk):
         self.menu_fichier.add_command(
             label="Nouveau fichier JSON", command=lambda: self.creer_tableau(set_path=None))
         self.menu_fichier.add_command(
-            label="Ouvrir un fichier JSON", command=lambda: open_json(self, self.creer_tableau(True)))
+            label="Ouvrir un fichier JSON", command=lambda: open_json(self, lambda: self.creer_tableau(True)))
         self.barre_menu.add_cascade(label="Fichier", menu=self.menu_fichier)
         # Créer un menu "Edition"
         self.menu_edition = Menu(self.barre_menu, tearoff=0)

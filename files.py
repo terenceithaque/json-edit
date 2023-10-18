@@ -14,12 +14,15 @@ def open_json(root, onopenfunc):
     file_path = filedialog.askopenfilename(
         title="Ouvrir un fichier JSON", filetypes=[("Fichiers JSON", "*.json")])
 
+    print(file_path)
+
     filename = os.path.basename(file_path)
     root.title("{} - JSON-Edit".format(filename))
 
     read_data(file_path)
 
     onopenfunc()
+    update_save_path(file_path)
 
 
 def update_save_path(new_save_path):
@@ -28,6 +31,7 @@ def update_save_path(new_save_path):
 
 
 def get_file_path():
+    print(file_path)
     return file_path
 
 
