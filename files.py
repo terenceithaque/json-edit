@@ -35,15 +35,21 @@ def get_file_path():
     return file_path
 
 
-def save_as_file(tableau):
-    "Sauvegarder sous un fichier JSON"
+def save_as_file(tableaux, root):
+    "Enregistrer le fichier au format JSON"
     save_path = filedialog.asksaveasfilename(
-        title="Enregistrer dans un fichier JSON", defaultextension=".json", filetypes=["Fichier JSON", "*.json"])
+        title="Enregistrer au format JSON", defaultextension=".json", filetypes=[("Fichier JSON", "*.json")])
 
-    for entree in tableau:
-        str_entree = entree.get()
-        with open(save_as_file, "w") as wf:
-            wf.write(str_entree)
-            wf.close()
+    data = []
 
-    return update_save_path(save_path)
+    for tableau in tableaux:
+        # Pour chaque entrée du tableau
+        for i in range(0, len(tableau.boutons_entrees), 2):
+            key = tableau.boutons_entrees[i].get()
+            value = tableau.boutons_entrees[i+1].get()
+            data.append({key: value})
+
+    with open(save_path, "w") as f:
+        json.dump(data, f, indent=4, ensure_ascii=True)
+
+    root.title(os.path.basename(save_path))

@@ -12,6 +12,8 @@ class Application(Tk):
     def __init__(self):
         super().__init__()  # Appeler le constructeur
         self.title("JSON-Edit")
+        self.liste_tableaux = []
+
         self.barre_menu = Menu(self, tearoff=0)  # Créer une barre de menus
         # Créer un menu "Fichier"
         self.menu_fichier = Menu(self.barre_menu, tearoff=0)
@@ -19,6 +21,9 @@ class Application(Tk):
             label="Nouveau fichier JSON", command=lambda: self.creer_tableau(set_path=None))
         self.menu_fichier.add_command(
             label="Ouvrir un fichier JSON", command=lambda: open_json(self, lambda: self.creer_tableau(True)))
+
+        self.menu_fichier.add_command(
+            label="Enregistrer sous...", command=lambda: save_as_file(self.liste_tableaux, self))
         self.barre_menu.add_cascade(label="Fichier", menu=self.menu_fichier)
         # Créer un menu "Edition"
         self.menu_edition = Menu(self.barre_menu, tearoff=0)
@@ -36,8 +41,6 @@ class Application(Tk):
         self.barre_menu.add_cascade(
             label="Insertion", menu=self.menu_insertion)
         self.config(menu=self.barre_menu)
-
-        self.liste_tableaux = []
 
     def creer_tableau(self, set_path):
         "Créer un tableau"

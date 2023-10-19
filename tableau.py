@@ -41,7 +41,6 @@ class Tableau:
 
         root.bind("<Control-f>", self.search)
         root.bind("<Control-c>", lambda: self.copier(root.focus_get()))
-        root.bind("<Control-s>", self.save_as_file)
         root.bind("<Control-e>", lambda event: self.ajouter_entree(root, event))
 
     def search(self, event):
@@ -63,16 +62,6 @@ class Tableau:
     def destroy(self):
         for bouton in self.boutons_entrees:
             bouton.destroy()
-
-    def save_as_file(self, event):
-        "Sauvegarder sous un fichier JSON"
-        save_path = filedialog.asksaveasfilename(
-            defaultextension=".json", title="Enregistrer sous un fichier JSON", filetypes=[("JSON", "*.json")])
-        for bouton_entree in self.boutons_entrees:
-            print(bouton_entree)
-            str_entree = bouton_entree.get()
-            with open(save_path, "w") as wf:
-                json.dump(str_entree, wf)
 
     def ajouter_entree(self, root, event):
         "Ajouter un widget Entrée au tableau"
