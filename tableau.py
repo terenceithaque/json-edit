@@ -4,6 +4,7 @@ import json
 from donnees import read_data
 from tkinter import simpledialog
 from tkinter import filedialog
+from tkinter import messagebox
 
 
 class Tableau:
@@ -46,6 +47,9 @@ class Tableau:
     def search(self, event):
         "Rechercher un élément du fichier JSON"
 
+        # Liste des entrées ou élément correspondant à la recherche a été trouvé
+        liste_entrees_recherche = []
+
         recherche = simpledialog.askstring(
             "Element à rechercher", "Entrez l'élément à rechecher dans le tableau (tout élément correspondant verra sa colonne mise en jaune) :")
 
@@ -55,9 +59,14 @@ class Tableau:
                 # Si le texte est trouvé, mettre en évidence l'entrée
                 entree.config(bg="yellow")
                 entree.config(bg="yellow")
+                liste_entrees_recherche.append(entree)
 
             else:
                 entree.config(bg="white")
+
+        if liste_entrees_recherche == []:  # Si aucun élément correspondant à la recherche n'a été trouvé
+            messagebox.showinfo("Aucun résultat pour votre recherche",
+                                f"L'opération de recherche est terminée. Aucun résultat n'a été trouvé pour {recherche}")
 
     def destroy(self):
         for bouton in self.boutons_entrees:
