@@ -84,6 +84,7 @@ class Tableau:
             "Entrez l'élément à remplacer", "Saisissez l'élément à remplacer dans toutes les entrées :")
         new_str = simpledialog.askstring(
             "Entrez le nouvel élément", "Saisissez le nouvel élément :")
+        entrees_trouvees = []  # Liste des entrées où original_str a été trouvée
 
         for entree in self.boutons_entrees:  # Pour chaque entrée du tableau
             string = entree.get()
@@ -93,3 +94,9 @@ class Tableau:
                 entree.delete(original_str_index,
                               original_str_index + original_str_lenght)
                 entree.insert(original_str_index, new_str)
+
+                entrees_trouvees.append(original_str)
+
+        if entrees_trouvees == []:  # Si on a trouvé original_str dans aucune entrée
+            messagebox.showerror("Impossible d'effectuer le remplacement",
+                                 f"Nous n'avons pas pu remplacer {original_str} par {new_str} car {original_str} n'existe pas. Tentez de respecter la casse : par exemple, saisissez {original_str.lower()} pour remplacer {original_str.lower()} plutôt que {original_str.upper()}.")
